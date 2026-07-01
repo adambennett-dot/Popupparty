@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pop-Up Party Co. | Twin Cities Party Rentals & Delivery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#120F1A;
+    --bg-alt:#1C1628;
+    --bg-card:#221A30;
+    --yellow:#FFC93C;
+    --pink:#FF4FA3;
+    --teal:#2DD9C6;
+    --text:#F5F1FA;
+    --text-muted:#A79FBD;
+    --line:rgba(245,241,250,0.10);
+    --radius:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{ font-family:'Baloo 2',sans-serif; font-weight:800; letter-spacing:-0.01em; }
+  .mono{ font-family:'Space Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 24px; }
+  section{ padding:96px 0; position:relative; }
+
+  /* ---------- background ambience ---------- */
+  .blob{
+    position:absolute; border-radius:50%; filter:blur(70px); opacity:0.35; z-index:0;
+    animation: drift 22s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(30px,-24px) scale(1.08); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .blob{ animation:none; }
+    *{ scroll-behavior:auto !important; animation-duration:0.001ms !important; }
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(18,15,26,0.78);
+    border-bottom:1px solid var(--line);
+  }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1160px; margin:0 auto; }
+  .logo{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:1.25rem; }
+  .logo span{ color:var(--yellow); }
+  .nav-links{ display:flex; gap:28px; font-size:0.92rem; font-weight:600; }
+  .nav-links a{ color:var(--text-muted); transition:color .2s; }
+  .nav-links a:hover{ color:var(--yellow); }
+  .nav-cta{
+    background:var(--pink); color:#160F1E; font-weight:700; font-size:0.88rem;
+    padding:10px 20px; border-radius:100px; white-space:nowrap;
+  }
+  .nav-toggle{ display:none; }
+
+  /* ---------- marquee ---------- */
+  .marquee-band{
+    background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    overflow:hidden; padding:12px 0;
+  }
+  .marquee-track{
+    display:flex; gap:48px; white-space:nowrap; width:max-content;
+    animation:scroll 26s linear infinite;
+    font-family:'Space Mono',monospace; font-size:0.82rem; letter-spacing:0.08em;
+  }
+  .marquee-track span{ color:var(--text-muted); }
+  .marquee-track b{ color:var(--yellow); }
+  @keyframes scroll{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:110px 0 90px; text-align:center; }
+  .eyebrow{
+    display:inline-block; font-family:'Space Mono',monospace; font-size:0.78rem;
+    color:var(--teal); border:1px solid rgba(45,217,198,0.4); padding:6px 14px; border-radius:100px;
+    margin-bottom:24px;
+  }
+  .hero h1{ font-size:clamp(2.4rem, 6vw, 4.4rem); line-height:1.04; margin-bottom:22px; }
+  .hero h1 .hl{ color:var(--yellow); }
+  .hero p.lead{ color:var(--text-muted); font-size:1.15rem; max-width:560px; margin:0 auto 36px; }
+  .hero-ctas{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    display:inline-block; padding:15px 30px; border-radius:100px; font-weight:700; font-size:0.95rem;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary{ background:var(--yellow); color:#160F1E; }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,201,60,0.25); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--teal); color:var(--teal); }
+
+  /* ---------- section headers ---------- */
+  .section-head{ max-width:560px; margin:0 auto 56px; text-align:center; }
+  .section-head .eyebrow{ margin-bottom:14px; }
+  .section-head h2{ font-size:clamp(1.9rem,3.6vw,2.6rem); margin-bottom:14px; }
+  .section-head p{ color:var(--text-muted); }
+
+  /* ---------- services grid ---------- */
+  .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .card{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:30px 26px; transition:transform .2s ease, border-color .2s ease;
+  }
+  .card:hover{ transform:translateY(-4px); border-color:var(--accent,var(--yellow)); }
+  .card:nth-child(3n+1):hover{ --accent:var(--yellow); }
+  .card:nth-child(3n+2):hover{ --accent:var(--pink); }
+  .card:nth-child(3n+3):hover{ --accent:var(--teal); }
+  .card .ico{ font-size:1.8rem; margin-bottom:16px; }
+  .card h3{ font-size:1.2rem; margin-bottom:10px; }
+  .card p{ color:var(--text-muted); font-size:0.94rem; margin-bottom:18px; }
+  .price-tag{
+    display:inline-block; font-family:'Space Mono',monospace; font-size:0.86rem;
+    background:rgba(255,255,255,0.06); padding:6px 12px; border-radius:8px;
+  }
+
+  /* ---------- how it works ---------- */
+  .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; counter-reset:step; }
+  .step{ position:relative; padding-top:8px; }
+  .step .num{
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:2.4rem;
+    color:transparent; -webkit-text-stroke:1.5px var(--text-muted); opacity:0.5; display:block; margin-bottom:10px;
+  }
+  .step h3{ font-size:1.1rem; margin-bottom:8px; }
+  .step p{ color:var(--text-muted); font-size:0.93rem; }
+
+  /* ---------- promo banner ---------- */
+  .promo{
+    background:linear-gradient(120deg, rgba(255,79,163,0.14), rgba(255,201,60,0.14));
+    border:1px solid rgba(255,201,60,0.3); border-radius:var(--radius);
+    padding:40px; text-align:center; margin:0 auto;
+  }
+  .promo .code{
+    font-family:'Space Mono',monospace; font-size:1.3rem; letter-spacing:0.1em;
+    background:var(--bg); padding:8px 20px; border-radius:10px; display:inline-block; margin:14px 0;
+    border:1px dashed var(--yellow); color:var(--yellow);
+  }
+
+  /* ---------- service area ---------- */
+  .area-list{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .area-list span{
+    font-size:0.86rem; padding:8px 16px; border:1px solid var(--line); border-radius:100px; color:var(--text-muted);
+  }
+
+  /* ---------- contact ---------- */
+  .contact-box{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:44px; max-width:640px; margin:0 auto;
+  }
+  form{ display:grid; gap:16px; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  label{ font-size:0.82rem; color:var(--text-muted); display:block; margin-bottom:6px; font-weight:600; }
+  input, textarea, select{
+    width:100%; background:var(--bg); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; color:var(--text); font-family:'Inter',sans-serif; font-size:0.95rem;
+  }
+  input:focus, textarea:focus, select:focus{ outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal); }
+  textarea{ resize:vertical; min-height:100px; }
+  .submit-btn{
+    background:var(--teal); color:#0F1A18; font-weight:700; border:none; border-radius:100px;
+    padding:15px; font-size:0.95rem; cursor:pointer; transition:transform .18s ease;
+  }
+  .submit-btn:hover{ transform:translateY(-2px); }
+
+  /* ---------- footer ---------- */
+  footer{ border-top:1px solid var(--line); padding:48px 0; }
+  .foot-grid{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; align-items:center; }
+  .foot-links{ display:flex; gap:22px; font-size:0.88rem; color:var(--text-muted); }
+  .foot-links a:hover{ color:var(--yellow); }
+  .foot-small{ color:var(--text-muted); font-size:0.8rem; margin-top:20px; }
+
+  @media (max-width:860px){
+    .grid{ grid-template-columns:repeat(2,1fr); }
+    .steps{ grid-template-columns:1fr; }
+    .nav-links{ display:none; }
+    .row2{ grid-template-columns:1fr; }
+  }
+  @media (max-width:560px){
+    .grid{ grid-template-columns:1fr; }
+    section{ padding:64px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">POP-UP <span>PARTY</span> CO.</div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#area">Service area</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Book now</a>
+  </nav>
+  <div class="marquee-band">
+    <div class="marquee-track">
+      <span>🎈 <b>FREE DELIVERY</b> WITHIN 15 MILES OF THE TWIN CITIES</span>
+      <span>🎉 USE CODE <b>PARTY20</b> FOR 20% OFF YOUR FIRST BOOKING</span>
+      <span>🎈 BOUNCE HOUSES · TABLES · CHAIRS · GAMES · DELIVERY</span>
+      <span>🎉 NOW BOOKING TWIN CITIES METRO</span>
+      <span>🎈 <b>FREE DELIVERY</b> WITHIN 15 MILES OF THE TWIN CITIES</span>
+      <span>🎉 USE CODE <b>PARTY20</b> FOR 20% OFF YOUR FIRST BOOKING</span>
+      <span>🎈 BOUNCE HOUSES · TABLES · CHAIRS · GAMES · DELIVERY</span>
+      <span>🎉 NOW BOOKING TWIN CITIES METRO</span>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="blob" style="width:420px;height:420px; background:var(--pink); top:-100px; left:-140px;"></div>
+  <div class="blob" style="width:380px;height:380px; background:var(--teal); top:60px; right:-160px; animation-delay:6s;"></div>
+  <div class="wrap" style="position:relative; z-index:1;">
+    <span class="eyebrow">TWIN CITIES · EVENT RENTALS & DELIVERY</span>
+    <h1>Twin Cities, consider it <span class="hl">popped up.</span></h1>
+    <p class="lead">Bounce houses, tables, chairs, games, and more — delivered, set up, and hauled away. Book it, enjoy it, we handle the rest.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn btn-primary">Book your event</a>
+      <a href="#services" class="btn btn-ghost">See what's available</a>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WHAT WE BRING</span>
+      <h2>Everything but the guest list</h2>
+      <p>Pick what your event needs — we deliver, set up, and pick up when it's over.</p>
+    </div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="ico">🏰</div>
+        <h3>Bounce Houses</h3>
+        <p>Clean, safety-checked inflatables set up before your first guest arrives. Standard and slide-combo sizes available.</p>
+        <span class="price-tag">$140–$220 / day</span>
+      </div>
+
+      <div class="card">
+        <div class="ico">🪑</div>
+        <h3>Tables & Chairs</h3>
+        <p>Enough seating for a backyard birthday or a block party. We drop it off set up — no folding required.</p>
+        <span class="price-tag">$12/table · $2/chair</span>
+      </div>
+
+      <div class="card">
+        <div class="ico">🎯</div>
+        <h3>Yard Games</h3>
+        <p>Cornhole, giant Jenga, and more to keep the party going between cake and cleanup.</p>
+        <span class="price-tag">$35 / set / day</span>
+      </div>
+
+      <div class="card">
+        <div class="ico">🍴</div>
+        <h3>Silverware & Table Settings</h3>
+        <p>Skip the sink after the party. Flatware sets sized to your guest count, ready to use.</p>
+        <span class="price-tag">$20 / 25 guests</span>
+      </div>
+
+      <div class="card">
+        <div class="ico">🎨</div>
+        <h3>Custom Apparel & Decor</h3>
+        <p>Color-coordinated shirts and event decor that make your party look planned by a pro.</p>
+        <span class="price-tag">From $75</span>
+      </div>
+
+      <div class="card">
+        <div class="ico">🦸</div>
+        <h3>Character Appearances</h3>
+        <p>A costumed superhero or princess visit for the kids — big smiles, bigger photo ops.</p>
+        <span class="price-tag">$100 / hr · 1hr min</span>
+      </div>
+
+      <div class="card">
+        <div class="ico">🚚</div>
+        <h3>Delivery, Rental or Not</h3>
+        <p>Need furniture or a medium-to-large package moved? We deliver that too — no rental required.</p>
+        <span class="price-tag">From $40</span>
+      </div>
+
+      <div class="card">
+        <div class="ico">📦</div>
+        <h3>Full Party Bundles</h3>
+        <p>Bounce house + tables + chairs + games, bundled and discounted for full-day events.</p>
+        <span class="price-tag">Ask for a quote</span>
+      </div>
+
+      <div class="card">
+        <div class="ico">💬</div>
+        <h3>Easy Booking</h3>
+        <p>No accounts, no hassle. Tell us your date and what you need — we confirm and handle logistics.</p>
+        <span class="price-tag">Book below ↓</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="how" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">THE PROCESS</span>
+      <h2>Three steps, zero hassle</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="num mono">01</span>
+        <h3>Pick your rentals</h3>
+        <p>Browse what's available and tell us your date, guest count, and address.</p>
+      </div>
+      <div class="step">
+        <span class="num mono">02</span>
+        <h3>We deliver & set up</h3>
+        <p>We arrive ahead of your event and have everything ready before guests show up.</p>
+      </div>
+      <div class="step">
+        <span class="num mono">03</span>
+        <h3>We break it down</h3>
+        <p>When it's over, we haul everything away. You just enjoy the party.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="promo">
+      <span class="eyebrow">FIRST-TIME BOOKING</span>
+      <h2 style="font-size:1.6rem;">Save on your first party</h2>
+      <div class="code">PARTY20</div>
+      <p style="color:var(--text-muted);">Enter this code when you book to get 20% off your first rental.</p>
+    </div>
+  </div>
+</section>
+
+<section id="area">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WHERE WE GO</span>
+      <h2>Serving the Twin Cities metro</h2>
+      <p>Not sure if you're in range? Ask us — we're always expanding.</p>
+    </div>
+    <div class="area-list">
+      <span>Minneapolis</span><span>St. Paul</span><span>Bloomington</span><span>Eden Prairie</span>
+      <span>Edina</span><span>Brooklyn Park</span><span>Maple Grove</span><span>Woodbury</span>
+      <span>Burnsville</span><span>Minnetonka</span><span>Roseville</span><span>+ surrounding suburbs</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">LET'S PLAN IT</span>
+      <h2>Book your event</h2>
+      <p>Fill this out and we'll follow up to confirm details and availability.</p>
+    </div>
+    <div class="contact-box">
+      <form action="https://formspree.io/f/mqegpvlb" method="POST">
+        <div class="row2">
+          <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div>
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+        </div>
+        <div class="row2">
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div>
+            <label for="date">Event date</label>
+            <input type="date" id="date" name="event_date" required>
+          </div>
+        </div>
+        <div>
+          <label for="interest">What do you need?</label>
+          <select id="interest" name="interest">
+            <option>Bounce house</option>
+            <option>Tables & chairs</option>
+            <option>Yard games</option>
+            <option>Silverware & table settings</option>
+            <option>Custom apparel & decor</option>
+            <option>Character appearance</option>
+            <option>Delivery only (no rental)</option>
+            <option>Full party bundle</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div>
+          <label for="message">Tell us about your event</label>
+          <textarea id="message" name="message" placeholder="Guest count, location, anything else we should know..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send booking request</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="logo">POP-UP <span>PARTY</span> CO.</div>
+      <div class="foot-links">
+        <a href="https://instagram.com/popuppartyco" target="_blank" rel="noopener">Instagram @popuppartyco</a>
+        <a href="mailto:sales@speeddeeservices.com">sales@speeddeeservices.com</a>
+      </div>
+    </div>
+    <p class="foot-small">Pop-Up Party Co. is a service of Speed Dee Services LLC · Serving the Twin Cities metro · &copy; 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>
